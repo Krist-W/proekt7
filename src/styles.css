@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.btn {
+  @apply border border-solid border-yellow-600 px-4 py-2 rounded-md hover:bg-yellow-600 hover:text-white transition-all duration-300;
+}
+/* .background { наложение на изображение цвета
+    background-image: linear-gradient(180deg,rgba(255, 255, 255, 0.936),rgba(255, 255, 255, 0.954)),url('./images/79af441903854aba4f4b74f400b7a300.jpg');
+}
+ */
+
+.modal-booking {
+  background: rgba(1, 1, 1, 0.7);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  display: flex;
+  flex-wrap: wrap;
+  width: 50%;
+  opacity: 95%;
+  margin: 0 auto;
+  background-color: rgb(255, 255, 255);
+  border: 1px solid black;
+  box-shadow: 1px 1px 1px rgb(237, 237, 237);
+  border-radius: 14px;
+  padding: 40px;
+}
+
