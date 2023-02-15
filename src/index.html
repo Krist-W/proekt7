@@ -56,10 +56,10 @@
 </div>
 
     <p class="text-yellow-600 ml-16 mr-3 justify-start text-base hover:underline flex-wrap">ПО СТОИМОСТИ</p>
-    <input class="mx-3"id="price" type="range" min="20000" max="500000" value="500000"/>
+    <input class="" id="price" type="range" min="20000" max="500000" value="500000"/>
     <output class="" id="rangevalue"> 500 000 руб. </output>
-    <div id="toPrice"></div>
-  
+    <div id="toPrice" class=""></div>
+  <!-- при появлении выбранной стоимости сделать чтобы вконце строки было -->
 </div>
 </div>
 
@@ -77,20 +77,15 @@
   
 </div>
 <div id="modal-booking" class="modal-booking">
-  <div class="modal-content">
-  <h1 class="text">Забронировать тур</h1>
-  <div>
-    <input id="name" class="m-3" placeholder="Фамилия Имя Отчество"/>
-    <input id="phone" class="m-3" placeholder="Телефон"/>
-    <input id="email" class="m-3" placeholder="E-mail"/>
-    <input id="comment" class="m-3" placeholder="Комментарий"/>
-  </div>
-  <div>
-    <button class="btn m-3" id="send-modal-button">Отправить</button>
-    <button class="btn m-3" id="close-modal-button">Закрыть</button> 
-  </div>
-  </div>
+  <div class="modal-content" id="modal-content">
+    <h1 class="text-center font-medium text-xl">Забронировать тур</h1>
+  
+
+    
 </div>
+</div>
+
+
 <!-- class="grid grid-cols-2" класс для контейнеа чтобы было 2 колонки -->
 <!-- кнопка для добавления в избранное
   <button class="btn"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
