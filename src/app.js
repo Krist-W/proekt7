@@ -126,7 +126,7 @@ function renderTours(tours) {
         
 
       const ModalContent = document.getElementById("modal-content")
-      ModalContent.innerHTML += `
+      ModalContent.innerHTML = `
       <p><div class="bg-white overflow-hidden m-5 relative h-[42rem] grid lg:h-60 md:h-72 md:grid-cols-2 sm:grid-cols-1"> 
     
       <img class="h-full bg-cover bg-center rounded-lg" src="${tour.image}"</>
