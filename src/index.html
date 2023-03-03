@@ -5,6 +5,7 @@
     <meta charset="utf-8" />
     <link rel="stylesheet" href="styles.scss" />
     <link rel="stylesheet" href="styles.css" />
+
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -15,15 +16,23 @@
   </head>
   <body>
   
-   
+    <div class="bg-zinc-50 relative">
+      <div class="">
+     <div class="flex justify-end absolute top-4 right-4">
+        <button class="btn bg-zinc-50 m-4" id="favoriteButton">Избранное</button>
+      </div>
+      <img class="w-full h-96 m-0 m-auto object-cover" src="./images/161534289.jpg"/>
+    </div>
+    
+      
 
-     <div class="bg-zinc-50 w-full relative h-96 m-0 m-auto"><img class="w-full h-full object-cover" src="./images/161534289.jpg" alt="" /> 
-<div class="flex flex-wrap max-w-5xl px-5 py-5 m-0 m-auto">
 
+    <div class="flex flex-wrap max-w-5xl px-5 py-5 m-0 m-auto">
 
+ 
   <!-- ФИЛЬТРЫ   -->
 <div class="flex flex-wrap justify-between w-full">
-      <button class="btn" id="all">Все страны</button>
+      <button class="btn" id="all">Все туры</button>
       <button class="btn" id="thailand">Тайланд</button>
       <button class="btn" id="maldives">Мальдивы</button>
       <button class="btn" id="indonesia">Индонезия</button>
@@ -97,5 +106,6 @@
 </div>
 
     <script type="module" src="app.js"></script>
+
   </body>
 </html>

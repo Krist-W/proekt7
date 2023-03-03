@@ -7,7 +7,7 @@
 }
 
 .form {
-  @apply m-3 p-1 w-full border border-gray-600 text-base rounded-lg shadow-lg
+  @apply m-3 p-1 w-full border border-gray-600 text-base rounded-lg shadow-lg;
 }
 /* .background { наложение на изображение цвета
     background-image: linear-gradient(180deg,rgba(255, 255, 255, 0.936),rgba(255, 255, 255, 0.954)),url('./images/79af441903854aba4f4b74f400b7a300.jpg');
@@ -38,4 +38,3 @@
   border-radius: 14px;
   padding: 40px;
 }
-
