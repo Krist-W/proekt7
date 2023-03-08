@@ -1,10 +1,11 @@
 import { differenceInDays, format } from "date-fns";
 import differenceInCalendarDays from "date-fns/fp/differenceInCalendarDays/index.js";
-import { id, ru } from "date-fns/locale";
+import { ru } from "date-fns/locale";
 import Swal from "sweetalert2/dist/sweetalert2.js";
 
 const Swal = require("sweetalert2");
 let favorite = [] // массив для избранного
+let currentID = {}
 
 async function loadTours() {
   const response = await fetch(
@@ -127,6 +128,7 @@ function closeModal() {
 }
 
 function openModal(tour) {
+  let currentID = tour.id
   ModalBoooking.style.display = "flex";
 
   document.getElementById("container").innerHTML = "";
@@ -214,7 +216,7 @@ async function bookingTour() {
     description: comment,
   };
 
-  let currentID = id
+
 
 
   const url = `https://www.bit-by-bit.ru/api/student-projects/tours/${currentID}`;
