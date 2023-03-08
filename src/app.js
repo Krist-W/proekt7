@@ -5,7 +5,7 @@ import Swal from "sweetalert2/dist/sweetalert2.js";
 
 const Swal = require("sweetalert2");
 let favorite = [] // массив для избранного
-let currentID = {}
+let currentID
 
 async function loadTours() {
   const response = await fetch(
