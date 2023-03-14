@@ -1,11 +1,13 @@
 import { differenceInDays, format } from "date-fns";
 import differenceInCalendarDays from "date-fns/fp/differenceInCalendarDays/index.js";
-import { ru } from "date-fns/locale";
+import { el, ru } from "date-fns/locale";
+import { Container } from "postcss";
 import Swal from "sweetalert2/dist/sweetalert2.js";
 
+let currentID
 const Swal = require("sweetalert2");
 let favorite = [] // массив для избранного
-let currentID
+
 
 async function loadTours() {
   const response = await fetch(
@@ -17,7 +19,14 @@ async function loadTours() {
 }
 
 function renderTours(tours) {
+  
+  
   document.getElementById("container").innerHTML = "";
+
+  if (tours.length === 0) {
+    document.getElementById("container").innerHTML += `<div class="text-gray-500 text-2xl mt-6 text-center">К сожалению ничего не найдено</div>`
+    return
+  }
 
   tours.forEach((tour) => {
     const city = checkCity(tour);
@@ -31,11 +40,9 @@ function renderTours(tours) {
     };
    
   
-    let favoriteId = []
-    favorite.forEach(t => favoriteId.push(t.id))
-    const isFavorite = favoriteId.includes(tour.id)
     
-    console.log(isFavorite)
+    
+
     document.getElementById("container").innerHTML += `
         
         <div class="bg-white shadow-lg rounded-lg overflow-hidden relative m-5 h-[42rem] grid lg:h-60 md:h-72 md:grid-cols-2 sm:grid-cols-1"> 
@@ -64,43 +71,23 @@ function renderTours(tours) {
 
           <div class="absolute bottom-0">
 
-        ${
-          isFavorite ? 
-          `<button class="btn m-2 center" id='deleteFavorite-${tour.id}'>Удалить из избранного</button>`
-          : 
-        `<button class="btn m-2 center" id='addFavorite-${tour.id}'>Добавить в избранное</button>`
-        }
-
-          <button class="btn m-2 center" id='booking-${tour.id}'>Забронировать</button>
+       
+          <button class="btn m-2" id='deleteFavorite-${tour.id}'>Удалить из избранного</button>
+        <button class="btn m-2" id='addFavorite-${tour.id}'>Добавить в избранное</button>
+          <button class="btn m-2" id='booking-${tour.id}'>Забронировать</button>
           </div>
   
 
        </span>
        `;
+       
+       if (favorite.includes(tour.id))  {
+        deleteBtn(tour)
+       } else {
+        addBtn(tour)
+       }
   });
 
-  tours.forEach((tour) => {
-    const deleteFavorite = document.getElementById(`deleteFavorite-${tour.id}`)
-    if (deleteFavorite)
-    document.getElementById(`deleteFavorite-${tour.id}`)
-      .addEventListener("click", () => deleteFavorite(id));
-  });
-
-/*   tours.forEach((tour) => {
-  getFavorites(tour.id)
-}); */
-
-    tours.forEach((tour) => {
-    const addFavorite = document.getElementById(`addFavorite-${tour.id}`)
-    if (addFavorite)
-    document.getElementById(`addFavorite-${tour.id}`)
-      .addEventListener("click", () => getFavorites(tour.id));
-  }); 
-
-  tours.forEach((tour) => {
-  document.getElementById(`favoriteButton`)
-  .addEventListener("click", () => seeFavorites(tours))
-});
 
 
   tours.forEach((tour) => {
@@ -109,14 +96,51 @@ function renderTours(tours) {
       .addEventListener("click", () => openModal(tour));
   });
 
-  function deleteFavorite(id) {
-    let favorite = []
-    let currentTour = favoritourste.find(t => t.id === id)
-    let tourIndex = favorite.indexOf(currentTour)
-    favorite.splice(tourIndex, 1)
-    renderTours(favorite)
+
+  function addBtn(tour) {
+    document.getElementById(`addFavorite-${tour.id}`).style.display = "flex"
+    document.getElementById(`deleteFavorite-${tour.id}`).style.display = "none"
+  }
+
+  function deleteBtn(tour) {
+    document.getElementById(`addFavorite-${tour.id}`).style.display = "none"
+    document.getElementById(`deleteFavorite-${tour.id}`).style.display = "flex"
+  }
+
+
+function deleteFavorite(tour) {
+  const index = favorite.indexOf(tour.id)
+  favorite.splice(index, 1)
+  saveLocalStorage()
+}
+
+  document.getElementById(`favoriteButton`).addEventListener("click", () => {
+    const favoriteTours = tours.filter((t) => {
+      return favorite.includes(t.id)
+    })
+    renderTours(favoriteTours)
+});
+
+
+tours.forEach((tour) => {
+  if (favorite.includes(tour.id)) {
+  document.getElementById(`deleteFavorite-${tour.id}`)
+    .addEventListener("click", () => {
+      deleteFavorite(tour)
+      renderTours(tours)
+      saveLocalStorage()
+      
+    })
+} else {
+  document.getElementById(`addFavorite-${tour.id}`)
+  .addEventListener("click", () => {
+    favorite.push(tour.id)
+    renderTours(tours)
     saveLocalStorage()
-  } 
+
+})
+}
+})
 }
 
 
@@ -172,20 +196,52 @@ function openModal(tour) {
      </div>
      <div class="m-0 m-auto">
     <p class="m-4 text-center font-medium text-xl">Заполните необходимую информацию для бронирования тура</p>
+    <div id="name-error" class="error"></div>
     <input id="name" class="form" placeholder="Фамилия Имя Отчество"/>
-    <div class="">
-    <input id="phone" class="form" placeholder="Телефон"/>
-    <input id="email" class="form" placeholder="E-mail"/>
-    </div>
-    <input id="comment" class="form" placeholder="Комментарий"/>
 
+    <div id="phone-error" class="error"></div>
+    <input id="phone" class="form" placeholder="Телефон"/>
+    <div id="email-error" class="error"></div>
+    <input id="email" class="form" placeholder="E-mail"/>
+    
+  
+    <input id="comment" class="form" placeholder="Комментарий"/>
+<div class="text-center">
     <button class="btn m-3" id="send-modal-button-${tour.id}">Отправить</button>
     <button class="btn m-3" id="close-modal-button">Закрыть</button> 
-
+    </div>
   </div>
      
      `;
 
+     function validateEmail() {
+      let с = document.getElementById("email").value;
+      if (с == "") {
+        document.getElementById("phone-error").innerHTML = `Укажите ваш email`
+        return false;
+      } else {
+        document.getElementById("phone-error").innerHTML = ``
+      }}
+      
+      function validatePhone() {
+        let b = document.getElementById(`phone`).value;
+        if (b == "") {
+          document.getElementById("email-error").innerHTML = `Укажите ваш телефон`
+          return false;
+        } else {
+          document.getElementById("email-error").innerHTML = ``
+        }}
+
+      function validateName() {
+        let a = document.getElementById(`name`).value;
+        if (a == "") {
+          document.getElementById("name-error").innerHTML = `Укажите ваше ФИО`
+          return false;
+        } else {
+          document.getElementById("name-error").innerHTML = ``
+        }
+      }
+    
   
   document
     .getElementById(`close-modal-button`)
@@ -195,113 +251,125 @@ function openModal(tour) {
   document
     .getElementById(`send-modal-button-${tour.id}`)
     .addEventListener("click", () => {
+      validatePhone()
+      validateEmail()
+      validateName()
       bookingTour()
     });
-  
-}
+
+    
 
 
+    async function bookingTour() {
 
-async function bookingTour() {
-
-  let name = document.getElementById("name").value;
-  let phone = document.getElementById("phone").value;
-  let email = document.getElementById("email").value;
-  let comment = document.getElementById("comment").value;
-
-  const params = {
-    customerName: name,
-    phone: phone,
-    email: email,
-    description: comment,
-  };
-
-
-
-
-  const url = `https://www.bit-by-bit.ru/api/student-projects/tours/${currentID}`;
-
-  let response = await fetch(url, {
-    method: "POST",
-    body: JSON.stringify(params)
-  })
-
-  try {
-    let data = await response.json();
-    if (parseInt(data.id) === currentID) {
-      Swal.fire({
-        position: "center",
-        icon: "success",
-        title: "Тур забронирован",
-        showConfirmButton: false,
-        timer: 2000,
-      });
+      let name = document.getElementById("name").value;
+      let phone = document.getElementById("phone").value;
+      let email = document.getElementById("email").value;
+      let comment = document.getElementById("comment").value;
+    
+      const params = {
+        customerName: name,
+        phone: phone,
+        email: email,
+        description: comment,
+      };
+    
+    
+    
+    
+      const url = `https://www.bit-by-bit.ru/api/student-projects/tours/${currentID}`;
+    
+      let response = await fetch(url, {
+        method: "POST",
+        body: JSON.stringify(params)
+      })
+    
+      try {
+        let data = await response.json();
+        if (parseInt(data.id) === currentID) {
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Тур забронирован",
+            showConfirmButton: false,
+            timer: 2000,
+          }, closeModal());
+        }
+      } catch {
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "Что-то пошло не так...",
+          showConfirmButton: false,
+          timer: 2000,
+        });
+      }
+      
     }
-  } catch {
-    Swal.fire({
-      position: "center",
-      icon: "error",
-      title: "Что-то пошло не так...",
-      showConfirmButton: false,
-      timer: 2000,
-    });
-  }
-  
+
+
 }
+
+
+
 
 // Избранное
 
 
-function saveLocalStorage() {
-  const toursJson = JSON.stringify(favorite)
-  localStorage.setItem('favorite', toursJson)
-}
 
-// страница с избранными турами, попытка сделать
-async function seeFavorites(id) {
-  let favorite = JSON.parse(localStorage.getItem("favorite"))
-  const response = await fetch("https://www.bit-by-bit.ru/api/student-projects/tours");
-  const tours = await response.json();
 
-  if (id) {
-     if (favorite.length >= 1) {
-     const favorited = tours.filter(tour => favorite.includes(tour.id))
-     renderTours(favorited)
-     console.log(favorited)
-     saveLocalStorage()
-     } else {
-      document.getElementById("container").innerHTML = `<div class="text-center font-medium text-5xl m-16 text-gray-500">Туры не найдены</div>`;
-      saveLocalStorage()
-     }
+// // страница с избранными турами, попытка сделать
+// async function seeFavorites(id) {
+//   let favorite = JSON.parse(localStorage.getItem("favorite"))
+//   const response = await fetch("https://www.bit-by-bit.ru/api/student-projects/tours");
+//   const tours = await response.json();
 
-     document
-    .getElementById("all")
-    .addEventListener("click", () => init()); 
+//   if (id) {
+//      if (favorite.length >= 1) {
+//      const favorited = tours.filter(tour => favorite.includes(tour.id))
+//      renderTours(favorited)
+//      console.log(favorited)
+//      saveLocalStorage()
+//      } else {
+//       document.getElementById("container").innerHTML = `<div class="text-center font-medium text-5xl m-16 text-gray-500">Туры не найдены</div>`;
+//       saveLocalStorage()
+//      }
 
-    // почему-то с третьего нажатия на кнопку все туры перерисовывает
-}
-saveLocalStorage()
-}
+//      document
+//     .getElementById("all")
+//     .addEventListener("click", () => init()); 
 
-function getFavorites(id) {
-  let favorite = JSON.parse(localStorage.getItem("favorite"))
-  if(id) {
-    if (favorite.includes(id)) {
-      favorite.push(id)
+//     // почему-то с третьего нажатия на кнопку все туры перерисовывает
+// }
+// saveLocalStorage()
+// }
 
-    }
+// function getFavorites(id) {
+//   let favorite = JSON.parse(localStorage.getItem("favorite"))
+//   if(id) {
+//     if (favorite.includes(id)) {
+//       favorite.push(id)
+
+//     }
     
-  }
-  saveLocalStorage()
-}
+//   }
+//   saveLocalStorage()
+// }
 
 
 
 
 
 
-
+    function saveLocalStorage() {
+    const toursJson = JSON.stringify(favorite)
+    localStorage.setItem('favorite', toursJson)
+ }
   
+ const toursJson = localStorage.getItem("favorite")
+if (toursJson) {
+  favorite = JSON.parse(toursJson)
+}  
 
 
 
@@ -355,10 +423,7 @@ function filterByRating(tours, rating) {
 }
 
 
-const toursJson = localStorage.getItem("favorite")
-if (toursJson) {
-  favorite = JSON.parse(toursJson)
-}  
+
 
 async function init() {
   const tours = await loadTours();
