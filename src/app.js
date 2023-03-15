@@ -42,7 +42,7 @@ function renderTours(tours) {
         
         <div class="bg-white shadow-lg rounded-lg overflow-hidden relative m-5 h-[42rem] grid lg:h-245px min-[850px]:grid-cols-2 h-72 max-[849px]:grid-cols-1 h-3/4 max-[650px]:h-[570px] max-[550px]:h-[700px] max-[350px]:h-[750px]"> 
     
-        <img class="h-full bg-cover bg-center max-[852px]:h-72 w-full max-[600px]:h-[290px] max-[550px]:h-[380px] max-[400px]:h-full" src="${tour.image}"</>
+        <img class="bg-cover bg-center h-72 max-[852px]:h-72 w-full max-[600px]:h-[290px] max-[550px]:h-[380px] max-[400px]:h-full" src="${tour.image}"</>
         <span class="m-5 max-[650px]:mt-1">
         <div class="flex font-medium text-xl">${
           tour.hotelName
