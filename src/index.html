@@ -15,91 +15,102 @@
     />
   </head>
   <body>
-  
+    <script type="module" src="app.js"></script>
     <div class="bg-zinc-50 relative">
       <div class="">
-     <div class="flex justify-end absolute top-4 right-4">
-        <button class="btn bg-zinc-50 m-4" id="favoriteButton">Избранное</button>
+        <div class="flex justify-end absolute top-4 right-4">
+          <button class="btn bg-zinc-50 m-4" id="favoriteButton">
+            Избранное
+          </button>
+        </div>
+        <img
+          class="w-full h-96 m-0 m-auto object-cover"
+          src="./images/161534289.jpg"
+        />
       </div>
-      <img class="w-full h-96 m-0 m-auto object-cover" src="./images/161534289.jpg"/>
-    </div>
-    
-      
 
-
-    <div class="flex flex-wrap max-w-5xl px-5 py-5 m-0 m-auto">
-
- 
-  <!-- ФИЛЬТРЫ   -->
-<div class="flex flex-wrap justify-between w-full">
-      <button class="btn" id="all">Все туры</button>
-      <button class="btn" id="thailand">Тайланд</button>
-      <button class="btn" id="maldives">Мальдивы</button>
-      <button class="btn" id="indonesia">Индонезия</button>
-      <button class="btn" id="egypt">Египет</button>
-      <button class="btn" id="cyprus">Кипр</button>
-      <button class="btn" id="mexico">Мексика</button>
-      <button class="btn" id="tanzania">Танзания</button>
-    </div>
-
-<div class="flex justify-between w-full my-5 flex-wrap">
-  <p class="text-yellow-600 mr-3 justify-start text-base hover:underline">ПО РЕЙТИНГУ</p>
-  <div>
-    <label class="mx-3" id="less">
-    <input type="checkbox"> Рейтинг менее 8
-    <span class="checkmark"></span>
-  </label>
-</div>
-
-<div>
-  <label class="mx-3" id="more">
-    <input type="checkbox"> Рейтинг более 8
-    <span class="checkmark"></span>
-  </label>
-</div>
-<div>
-  <label class="mx-3" id="allRatings">
-    <input type="checkbox"> Любой
-    <span class="checkmark"></span>
-  </label>
-</div>
-
-    <p class="text-yellow-600 ml-16 mr-3 justify-start text-base hover:underline flex-wrap">ПО СТОИМОСТИ</p>
-    <input class="" id="price" type="range" min="20000" max="500000" value="500000"/>
-    <output class="" id="rangevalue"> 500 000 руб. </output>
-    <div id="toPrice" class=""></div>
-  <!-- при появлении выбранной стоимости сделать чтобы вконце строки было -->
-</div>
-</div>
-
-      <div class="max-w-6xl mx-auto py-16 px-12 sm:px-8 py-8">
-        
-     
-        <div class="text-center">
-          <h1 class="text-4xl font-bold text-gray-900" id="title">Лучшие цены на туры</h1>
-          <p class="text-gray-500 mt-4">
-            Самые горящие туры в жаркие страны
-          </p>
+      <div class="flex flex-wrap max-w-5xl p-5 m-0 m-auto item-center">
+        <!-- ФИЛЬТРЫ   -->
+        <div class="flex flex-wrap justify-between w-full max-[965px]:grid grid-cols-4 max-[540px]:grid-cols-2 max-[300px]:grid-cols-1">
+          <button class="btn m-2" id="all">Все туры</button>
+          <button class="btn m-2" id="thailand">Тайланд</button>
+          <button class="btn m-2" id="maldives">Мальдивы</button>
+          <button class="btn m-2" id="indonesia">Индонезия</button>
+          <button class="btn m-2" id="egypt">Египет</button>
+          <button class="btn m-2" id="cyprus">Кипр</button>
+          <button class="btn m-2" id="mexico">Мексика</button>
+          <button class="btn m-2" id="tanzania">Танзания</button>
         </div>
 
-<div id="container">
-  
-</div>
-<div id="modal-booking" class="modal-booking">
-  <div class="modal-content" id="modal-content">
-    <h1 class="text-center font-medium text-xl">Забронировать тур</h1>
-  
+        <div class="flex justify-center w-full m-3 flex-wrap">
+          <p
+            class="text-yellow-600 m-2 justify-start text-base hover:underline"
+          >
+            ПО РЕЙТИНГУ
+          </p>
+          <div class="m-2">
+            <label class="m-2" id="less">
+              <input type="checkbox" /> Рейтинг менее 8
+              <span class="checkmark"></span>
+            </label>
+          </div>
 
-    
-</div>
-</div>
+          <div class="m-2">
+            <label class="m-2" id="more">
+              <input type="checkbox" /> Рейтинг более 8
+              <span class="checkmark"></span>
+            </label>
+          </div>
+          <div class="m-2">
+            <label class="m-2" id="allRatings">
+              <input type="checkbox" /> Любой
+              <span class="checkmark"></span>
+            </label>
+          </div>
+        </div>
+<div class="flex justify-center w-full flex-wrap">
+          <p
+            class="text-yellow-600 m-2 justify-center text-base hover:underline flex-wrap"
+          >
+            ПО СТОИМОСТИ
+          </p>
+          <input
+            class=""
+            id="price"
+            type="range"
+            min="20000"
+            max="500000"
+            value="500000"
+          />
+          <output class="m-2" id="rangevalue"> 500 000 руб. </output>
+          <div id="toPrice" class="m-2 justify-center"></div>
+          <!-- при появлении выбранной стоимости сделать чтобы вконце строки было -->
+        </div>
 
+      </div>
 
+      <div class="max-w-6xl mx-auto py-16 px-12 sm:px-8 py-8 max-[650px]:py-4 px-4">
+        <div class="text-center">
+          <h1 class="text-4xl font-bold text-gray-900" id="title">
+            Лучшие цены на туры
+          </h1>
+          <h1
+            class="text-4xl font-bold text-gray-900"
+            id="titleFavorite"
+            hidden
+          >
+            Избранные туры
+          </h1>
+          <p class="text-gray-500 mt-4">Самые горящие туры в жаркие страны</p>
+        </div>
 
-
-</div>
-
-    <script type="module" src="app.js"></script>
-
+        <div id="container"></div>
+        <div id="modal-booking" class="modal-booking">
+          <div class="modal-content" id="modal-content">
+            <h1 class="text-center font-medium text-xl">Забронировать тур</h1>
+          </div>
+        </div>
+      </div>
+    </div>
   </body>
 </html>

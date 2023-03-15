@@ -10,7 +10,6 @@
   @apply text-red-600 ml-4 mt-2;
 }
 
-
 .form {
   @apply m-3 p-1 w-full border border-gray-600 text-base rounded-lg shadow-lg;
 }
@@ -42,4 +41,29 @@
   box-shadow: 1px 1px 1px rgb(237, 237, 237);
   border-radius: 14px;
   padding: 40px;
+}
+
+@media (max-width: 900px) {
+  .modal-content {
+    width: 80%;
+    
+  }
+  
+}
+
+@media (max-width: 600px) {
+  .modal-content {
+    width: 90%;
+
+    
+  }
+  
+}
+
+@media (max-width: 500px) {
+  .modal-content {
+    width: 95%;
+    
+  }
+  
 }

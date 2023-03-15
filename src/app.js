@@ -4,10 +4,9 @@ import { el, ru } from "date-fns/locale";
 import { Container } from "postcss";
 import Swal from "sweetalert2/dist/sweetalert2.js";
 
-let currentID
+let currentID;
 const Swal = require("sweetalert2");
-let favorite = [] // массив для избранного
-
+let favorite = []; // массив для избранного
 
 async function loadTours() {
   const response = await fetch(
@@ -19,13 +18,13 @@ async function loadTours() {
 }
 
 function renderTours(tours) {
-  
-  
   document.getElementById("container").innerHTML = "";
 
   if (tours.length === 0) {
-    document.getElementById("container").innerHTML += `<div class="text-gray-500 text-2xl mt-6 text-center">К сожалению ничего не найдено</div>`
-    return
+    document.getElementById(
+      "container"
+    ).innerHTML += `<div class="text-gray-500 text-2xl mt-6 text-center">К сожалению ничего не найдено</div>`;
+    return;
   }
 
   tours.forEach((tour) => {
@@ -38,17 +37,13 @@ function renderTours(tours) {
     const option = {
       locale: ru,
     };
-   
-  
-    
-    
 
     document.getElementById("container").innerHTML += `
         
-        <div class="bg-white shadow-lg rounded-lg overflow-hidden relative m-5 h-[42rem] grid lg:h-60 md:h-72 md:grid-cols-2 sm:grid-cols-1"> 
+        <div class="bg-white shadow-lg rounded-lg overflow-hidden relative m-5 h-[42rem] grid lg:h-245px min-[850px]:grid-cols-2 h-72 max-[849px]:grid-cols-1 h-3/4 max-[650px]:h-[570px] max-[550px]:h-[700px] max-[350px]:h-[750px]"> 
     
-        <img class="h-full bg-cover bg-center" src="${tour.image}"</>
-        <span class="m-5">
+        <img class="h-full bg-cover bg-center max-[852px]:h-72 w-full max-[600px]:h-[290px] max-[550px]:h-[380px] max-[400px]:h-full" src="${tour.image}"</>
+        <span class="m-5 max-[650px]:mt-1">
         <div class="flex font-medium text-xl">${
           tour.hotelName
         }<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-yellow-600 ml-2 mr-1">
@@ -69,26 +64,27 @@ function renderTours(tours) {
             tour.price
           } руб.</p>
 
-          <div class="absolute bottom-0">
+          <div class="absolute bottom-0 flex flex-nowrap max-[900px]:flex-wrap-reverse">
 
-       
-          <button class="btn m-2" id='deleteFavorite-${tour.id}'>Удалить из избранного</button>
-        <button class="btn m-2" id='addFavorite-${tour.id}'>Добавить в избранное</button>
+          <button class="btn m-2" id='deleteFavorite-${
+            tour.id
+          }'>Удалить из избранного</button>
+        <button class="btn m-2" id='addFavorite-${
+          tour.id
+        }'>Добавить в избранное</button>
           <button class="btn m-2" id='booking-${tour.id}'>Забронировать</button>
           </div>
   
 
        </span>
        `;
-       
-       if (favorite.includes(tour.id))  {
-        deleteBtn(tour)
-       } else {
-        addBtn(tour)
-       }
+
+    if (favorite.includes(tour.id)) {
+      deleteBtn(tour);
+    } else {
+      addBtn(tour);
+    }
   });
-
-
 
   tours.forEach((tour) => {
     document
@@ -96,54 +92,55 @@ function renderTours(tours) {
       .addEventListener("click", () => openModal(tour));
   });
 
-
   function addBtn(tour) {
-    document.getElementById(`addFavorite-${tour.id}`).style.display = "flex"
-    document.getElementById(`deleteFavorite-${tour.id}`).style.display = "none"
+    document.getElementById(`addFavorite-${tour.id}`).style.display = "flex";
+    document.getElementById(`deleteFavorite-${tour.id}`).style.display = "none";
   }
 
   function deleteBtn(tour) {
-    document.getElementById(`addFavorite-${tour.id}`).style.display = "none"
-    document.getElementById(`deleteFavorite-${tour.id}`).style.display = "flex"
+    document.getElementById(`addFavorite-${tour.id}`).style.display = "none";
+    document.getElementById(`deleteFavorite-${tour.id}`).style.display = "flex";
   }
 
+  function deleteFavorite(tour) {
+    const index = favorite.indexOf(tour.id);
+    favorite.splice(index, 1);
+    saveLocalStorage();
+  }
 
-function deleteFavorite(tour) {
-  const index = favorite.indexOf(tour.id)
-  favorite.splice(index, 1)
-  saveLocalStorage()
-}
+  function hideFavorite() {
+    document.getElementById("title").hidden = true;
+    document.getElementById("titleFavorite").hidden = false;
+  }
 
   document.getElementById(`favoriteButton`).addEventListener("click", () => {
     const favoriteTours = tours.filter((t) => {
-      return favorite.includes(t.id)
-    })
-    renderTours(favoriteTours)
-});
+      return favorite.includes(t.id);
+    });
+    hideFavorite();
+    renderTours(favoriteTours);
+  });
 
-
-tours.forEach((tour) => {
-  if (favorite.includes(tour.id)) {
-  document.getElementById(`deleteFavorite-${tour.id}`)
-    .addEventListener("click", () => {
-      deleteFavorite(tour)
-      renderTours(tours)
-      saveLocalStorage()
-      
-    })
-} else {
-  document.getElementById(`addFavorite-${tour.id}`)
-  .addEventListener("click", () => {
-    favorite.push(tour.id)
-    renderTours(tours)
-    saveLocalStorage()
-
-})
+  tours.forEach((tour) => {
+    if (favorite.includes(tour.id)) {
+      document
+        .getElementById(`deleteFavorite-${tour.id}`)
+        .addEventListener("click", () => {
+          deleteFavorite(tour);
+          renderTours(tours);
+          saveLocalStorage();
+        });
+    } else {
+      document
+        .getElementById(`addFavorite-${tour.id}`)
+        .addEventListener("click", () => {
+          favorite.push(tour.id);
+          renderTours(tours);
+          saveLocalStorage();
+        });
+    }
+  });
 }
-})
-}
-
-
 
 const ModalBoooking = document.getElementById("modal-booking");
 
@@ -152,7 +149,7 @@ function closeModal() {
 }
 
 function openModal(tour) {
-  let currentID = tour.id
+  let currentID = tour.id;
   ModalBoooking.style.display = "flex";
 
   document.getElementById("container").innerHTML = "";
@@ -169,10 +166,10 @@ function openModal(tour) {
 
   const ModalContent = document.getElementById("modal-content");
   ModalContent.innerHTML = `
-      <p><div class="bg-white overflow-hidden m-5 relative h-[42rem] grid lg:h-60 md:h-72 md:grid-cols-2 sm:grid-cols-1"> 
+      <p><div class="bg-white overflow-hidden m-2 relative grid grid-cols-2 max-[650px]:grid-cols-1"> 
     
-      <img class="h-full bg-cover bg-center rounded-lg" src="${tour.image}"</>
-      <span class="m-5">
+      <img class="h-full bg-cover bg-center rounded-lg p-2 max-[650px]:h-[200px] w-full" src="${tour.image}"</>
+      <span class="m-2">
       <div class="flex font-medium text-xl">${
         tour.hotelName
       }<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-yellow-600 ml-2 mr-1">
@@ -195,7 +192,7 @@ function openModal(tour) {
         </span>
      </div>
      <div class="m-0 m-auto">
-    <p class="m-4 text-center font-medium text-xl">Заполните необходимую информацию для бронирования тура</p>
+    <p class="m-1 text-center font-medium text-xl">Заполните необходимую информацию для бронирования тура</p>
     <div id="name-error" class="error"></div>
     <input id="name" class="form" placeholder="Фамилия Имя Отчество"/>
 
@@ -214,164 +211,106 @@ function openModal(tour) {
      
      `;
 
-     function validateEmail() {
-      let с = document.getElementById("email").value;
-      if (с == "") {
-        document.getElementById("phone-error").innerHTML = `Укажите ваш email`
-        return false;
-      } else {
-        document.getElementById("phone-error").innerHTML = ``
-      }}
-      
-      function validatePhone() {
-        let b = document.getElementById(`phone`).value;
-        if (b == "") {
-          document.getElementById("email-error").innerHTML = `Укажите ваш телефон`
-          return false;
-        } else {
-          document.getElementById("email-error").innerHTML = ``
-        }}
+  function validateEmail() {
+    let с = document.getElementById("email").value;
+    if (с == "") {
+      document.getElementById("phone-error").innerHTML = `Укажите ваш email`;
+      return false;
+    } else {
+      document.getElementById("phone-error").innerHTML = ``;
+    }
+  }
 
-      function validateName() {
-        let a = document.getElementById(`name`).value;
-        if (a == "") {
-          document.getElementById("name-error").innerHTML = `Укажите ваше ФИО`
-          return false;
-        } else {
-          document.getElementById("name-error").innerHTML = ``
-        }
-      }
-    
-  
+  function validatePhone() {
+    let b = document.getElementById(`phone`).value;
+    if (b == "") {
+      document.getElementById("email-error").innerHTML = `Укажите ваш телефон`;
+      return false;
+    } else {
+      document.getElementById("email-error").innerHTML = ``;
+    }
+  }
+
+  function validateName() {
+    let a = document.getElementById(`name`).value;
+    if (a == "") {
+      document.getElementById("name-error").innerHTML = `Укажите ваше ФИО`;
+      return false;
+    } else {
+      document.getElementById("name-error").innerHTML = ``;
+    }
+  }
+
   document
     .getElementById(`close-modal-button`)
     .addEventListener("click", closeModal, init());
 
-  
   document
     .getElementById(`send-modal-button-${tour.id}`)
     .addEventListener("click", () => {
-      validatePhone()
-      validateEmail()
-      validateName()
-      bookingTour()
+      validatePhone();
+      validateEmail();
+      validateName();
+      bookingTour();
     });
 
-    
+  async function bookingTour() {
+    let name = document.getElementById("name").value;
+    let phone = document.getElementById("phone").value;
+    let email = document.getElementById("email").value;
+    let comment = document.getElementById("comment").value;
 
+    const params = {
+      customerName: name,
+      phone: phone,
+      email: email,
+      description: comment,
+    };
 
-    async function bookingTour() {
+    const url = `https://www.bit-by-bit.ru/api/student-projects/tours/${currentID}`;
 
-      let name = document.getElementById("name").value;
-      let phone = document.getElementById("phone").value;
-      let email = document.getElementById("email").value;
-      let comment = document.getElementById("comment").value;
-    
-      const params = {
-        customerName: name,
-        phone: phone,
-        email: email,
-        description: comment,
-      };
-    
-    
-    
-    
-      const url = `https://www.bit-by-bit.ru/api/student-projects/tours/${currentID}`;
-    
-      let response = await fetch(url, {
-        method: "POST",
-        body: JSON.stringify(params)
-      })
-    
-      try {
-        let data = await response.json();
-        if (parseInt(data.id) === currentID) {
-          Swal.fire({
+    let response = await fetch(url, {
+      method: "POST",
+      body: JSON.stringify(params),
+    });
+
+    try {
+      let data = await response.json();
+      if (parseInt(data.id) === currentID) {
+        Swal.fire(
+          {
             position: "center",
             icon: "success",
             title: "Тур забронирован",
             showConfirmButton: false,
             timer: 2000,
-          }, closeModal());
-        }
-      } catch {
-        Swal.fire({
-          position: "center",
-          icon: "error",
-          title: "Что-то пошло не так...",
-          showConfirmButton: false,
-          timer: 2000,
-        });
+          },
+          closeModal()
+        );
       }
-      
+    } catch {
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: "Что-то пошло не так...",
+        showConfirmButton: false,
+        timer: 2000,
+      });
     }
-
-
+  }
 }
-
-
-
 
 // Избранное
 
+function saveLocalStorage() {
+  const toursJson = JSON.stringify(favorite);
+  localStorage.setItem("favorite", toursJson);
+}
 
-
-
-// // страница с избранными турами, попытка сделать
-// async function seeFavorites(id) {
-//   let favorite = JSON.parse(localStorage.getItem("favorite"))
-//   const response = await fetch("https://www.bit-by-bit.ru/api/student-projects/tours");
-//   const tours = await response.json();
-
-//   if (id) {
-//      if (favorite.length >= 1) {
-//      const favorited = tours.filter(tour => favorite.includes(tour.id))
-//      renderTours(favorited)
-//      console.log(favorited)
-//      saveLocalStorage()
-//      } else {
-//       document.getElementById("container").innerHTML = `<div class="text-center font-medium text-5xl m-16 text-gray-500">Туры не найдены</div>`;
-//       saveLocalStorage()
-//      }
-
-//      document
-//     .getElementById("all")
-//     .addEventListener("click", () => init()); 
-
-//     // почему-то с третьего нажатия на кнопку все туры перерисовывает
-// }
-// saveLocalStorage()
-// }
-
-// function getFavorites(id) {
-//   let favorite = JSON.parse(localStorage.getItem("favorite"))
-//   if(id) {
-//     if (favorite.includes(id)) {
-//       favorite.push(id)
-
-//     }
-    
-//   }
-//   saveLocalStorage()
-// }
-
-
-
-
-
-
-    function saveLocalStorage() {
-    const toursJson = JSON.stringify(favorite)
-    localStorage.setItem('favorite', toursJson)
- }
-  
- const toursJson = localStorage.getItem("favorite")
+const toursJson = localStorage.getItem("favorite");
 if (toursJson) {
-  favorite = JSON.parse(toursJson)
-}  
-
-
+  favorite = JSON.parse(toursJson);
+}
 
 // фильтры
 
@@ -422,37 +361,71 @@ function filterByRating(tours, rating) {
   }
 }
 
-
-
-
 async function init() {
   const tours = await loadTours();
   renderTours(tours);
 
-  document
-    .getElementById("indonesia")
-    .addEventListener("click", () => filterByCountry(tours, "Индонезия"));
-  document
-    .getElementById("thailand")
-    .addEventListener("click", () => filterByCountry(tours, "Тайланд"));
-  document
-    .getElementById("maldives")
-    .addEventListener("click", () => filterByCountry(tours, "Мальдивы"));
-  document
-    .getElementById("egypt")
-    .addEventListener("click", () => filterByCountry(tours, "Египет"));
-  document
-    .getElementById("cyprus")
-    .addEventListener("click", () => filterByCountry(tours, "Кипр"));
-  document
-    .getElementById("mexico")
-    .addEventListener("click", () => filterByCountry(tours, "Мексика"));
-  document
-    .getElementById("tanzania")
-    .addEventListener("click", () => filterByCountry(tours, "Танзания"));
-  document
-    .getElementById("all")
-    .addEventListener("click", () => filterByCountry(tours));
+  function hideTitle() {
+    document.getElementById("title").hidden = false;
+    document.getElementById("titleFavorite").hidden = true;
+  }
+
+  document.getElementById("indonesia").addEventListener(
+    "click",
+    () => {
+      hideTitle(), filterByCountry(tours, "Индонезия");
+    },
+    false
+  );
+  document.getElementById("thailand").addEventListener(
+    "click",
+    () => {
+      hideTitle(), filterByCountry(tours, "Тайланд");
+    },
+    false
+  );
+  document.getElementById("maldives").addEventListener(
+    "click",
+    () => {
+      hideTitle(), filterByCountry(tours, "Мальдивы");
+    },
+    false
+  );
+  document.getElementById("egypt").addEventListener(
+    "click",
+    () => {
+      hideTitle(), filterByCountry(tours, "Египет");
+    },
+    false
+  );
+  document.getElementById("cyprus").addEventListener(
+    "click",
+    () => {
+      hideTitle(), filterByCountry(tours, "Кипр");
+    },
+    false
+  );
+  document.getElementById("mexico").addEventListener(
+    "click",
+    () => {
+      hideTitle(), filterByCountry(tours, "Мексика");
+    },
+    false
+  );
+  document.getElementById("tanzania").addEventListener(
+    "click",
+    () => {
+      hideTitle(), filterByCountry(tours, "Танзания");
+    },
+    false
+  );
+  document.getElementById(`all`).addEventListener(
+    "click",
+    () => {
+      hideTitle(), filterByCountry(tours);
+    },
+    false
+  );
   document
     .getElementById("less")
     .addEventListener("input", () => filterByRating(tours, 7));
